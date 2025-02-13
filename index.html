@@ -2,12 +2,14 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>星语心愿 | 情人节特别告白</title>
+    <title>粉色梦境 | 情人节告白</title>
     <style>
         :root {
-            --primary-color: #ff6b6b;
-            --secondary-color: #ff9e9e;
-            --accent-color: #ff4757;
+            --pink-1: #ff9eb5;
+            --pink-2: #ff7b9c;
+            --pink-3: #ff5c7c;
+            --pink-4: #ff3d5c;
+            --pink-5: #ff1a3d;
         }
 
         * {
@@ -17,230 +19,180 @@
         }
 
         body {
-            background: #1a1a1a;
+            background: linear-gradient(135deg, var(--pink-1), var(--pink-2));
             min-height: 100vh;
             overflow: hidden;
             font-family: 'Microsoft Yahei', cursive;
-            cursor: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32"><path fill="%23ff6b6b" d="M16 2C8.3 2 2 8.3 2 16s6.3 14 14 14 14-6.3 14-14S23.7 2 16 2zm0 26C9.4 28 4 22.6 4 16S9.4 4 16 4s12 5.4 12 12-5.4 12-12 12z"/><path fill="%23ff6b6b" d="M16 22c-3.3 0-6-2.7-6-6s2.7-6 6-6 6 2.7 6 6-2.7 6-6 6zm0-10c-2.2 0-4 1.8-4 4s1.8 4 4 4 4-1.8 4-4-1.8-4-4-4z"/></svg>'), auto;
-        }
-
-        .particles {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
+            cursor: pointer;
         }
 
         .container {
             position: relative;
-            z-index: 1;
-            perspective: 1000px;
             min-height: 100vh;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-        }
-
-        .card {
-            width: 90%;
-            max-width: 600px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 40px;
-            transform-style: preserve-3d;
-            animation: float 6s ease-in-out infinite;
-            box-shadow: 0 25px 45px rgba(0,0,0,0.2),
-                        inset 0 0 15px var(--primary-color);
-            border: 1px solid rgba(255,255,255,0.1);
+            padding: 20px;
         }
 
         h1 {
-            font-size: 3.5em;
-            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
-            -webkit-background-clip: text;
-            color: transparent;
-            text-align: center;
+            font-size: 4em;
+            color: white;
+            text-shadow: 0 0 20px rgba(255, 60, 92, 0.5);
             margin-bottom: 30px;
-            text-shadow: 0 0 20px rgba(255,107,107,0.3);
+            animation: float 3s ease-in-out infinite;
         }
 
-        .poem {
-            font-size: 1.2em;
-            line-height: 1.8;
-            color: rgba(255,255,255,0.9);
-            text-align: center;
-            margin: 20px 0;
+        .heart-container {
             position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 20px;
         }
 
-        .heart-btn {
-            width: 80px;
-            height: 80px;
-            background: var(--primary-color);
-            border-radius: 50%;
-            margin: 30px auto;
-            cursor: pointer;
-            transition: all 0.3s;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            animation: pulse 2s ease infinite;
-        }
-
-        .heart-btn::after {
-            content: '❤️';
-            font-size: 2.5em;
+        .heart {
             position: absolute;
-            transition: all 0.3s;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="%23ffffff" d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z"/></svg>') no-repeat center;
+            background-size: contain;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            animation: heartbeat 1.5s infinite;
         }
 
-        .petals {
-            position: fixed;
+        .heart:hover {
+            transform: scale(1.1);
+            filter: drop-shadow(0 0 20px var(--pink-5));
+        }
+
+        .click-effect {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
             pointer-events: none;
-            z-index: 2;
+            opacity: 0.8;
+            transform: scale(0);
+            animation: clickAnimation 0.5s ease-out;
+        }
+
+        .message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 0 30px rgba(255, 92, 124, 0.3);
+            text-align: center;
+            transition: all 0.5s ease;
+            z-index: 10;
+        }
+
+        .message.show {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .message p {
+            font-size: 1.5em;
+            color: var(--pink-5);
+            margin: 15px 0;
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: white;
+            clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+            animation: confetti-fall 5s linear infinite;
+            opacity: 0;
         }
 
         @keyframes float {
-            0%, 100% { transform: translateY(0) rotateX(5deg) rotateY(5deg); }
-            50% { transform: translateY(-20px) rotateX(-5deg) rotateY(-5deg); }
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
         }
 
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(255,107,107,0.4); }
-            70% { box-shadow: 0 0 0 20px rgba(255,107,107,0); }
-            100% { box-shadow: 0 0 0 0 rgba(255,107,107,0); }
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
         }
 
-        .hidden-message {
-            max-height: 0;
-            overflow: hidden;
-            transition: all 1s ease;
-            text-align: center;
-            color: var(--secondary-color);
+        @keyframes clickAnimation {
+            0% { transform: scale(0); opacity: 1; }
+            100% { transform: scale(3); opacity: 0; }
         }
 
-        .show { max-height: 500px; }
+        @keyframes confetti-fall {
+            0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+        }
     </style>
 </head>
 <body>
-    <canvas class="particles"></canvas>
-    <div class="petals"></div>
-
     <div class="container">
-        <div class="card">
-            <h1>星辰为证·此情可待</h1>
-            
-            <div class="poem">
-                <p>在时间的长河里</p>
-                <p>你是我唯一的锚点</p>
-                <p>心动如量子纠缠</p>
-                <p>穿越光年亦不衰减</p>
-            </div>
-
-            <div class="heart-btn" onclick="revealMessage()"></div>
-
-            <div class="hidden-message" id="message">
-                <div class="poem">
-                    <p>愿以余生为笺</p>
-                    <p>写不尽的三行诗：</p>
-                    <p>第一行是相遇</p>
-                    <p>第二行是相知</p>
-                    <p>第三行...</p>
-                    <p style="color: var(--accent-color); margin-top: 15px;">❤️ 留予你我共书 ❤️</p>
-                </div>
-            </div>
+        <h1>❤️ 点击心形 ❤️</h1>
+        <div class="heart-container">
+            <div class="heart" onclick="showMessage()"></div>
         </div>
     </div>
 
+    <div class="message" id="message">
+        <p>亲爱的魔女大人，</p>
+        <p>在粉色的梦境里，</p>
+        <p>我遇见了最美的你。</p>
+        <p>愿与你携手，</p>
+        <p>共度每一个情人节。</p>
+        <p style="color: var(--pink-3); margin-top: 20px;">💖 永远爱你 💖</p>
+    </div>
+
     <script>
-        // 粒子背景动画
-        const canvas = document.querySelector('.particles');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
+        // 点击特效
+        document.addEventListener('click', function(e) {
+            const effect = document.createElement('div');
+            effect.className = 'click-effect';
+            effect.style.left = `${e.pageX - 10}px`;
+            effect.style.top = `${e.pageY - 10}px`;
+            document.body.appendChild(effect);
+            setTimeout(() => effect.remove(), 500);
+        });
 
-        class Particle {
-            constructor() {
-                this.reset();
-            }
-            reset() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 2 + 1;
-                this.speed = Math.random() * 0.5 + 0.5;
-                this.alpha = Math.random() * 0.5 + 0.5;
-            }
-            update() {
-                this.y += this.speed;
-                if (this.y > canvas.height) this.reset();
-            }
-            draw() {
-                ctx.fillStyle = `hsla(${Math.random()*60 + 300}, 70%, 50%, ${this.alpha})`;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-            }
-        }
+        // 显示消息
+        function showMessage() {
+            const message = document.getElementById('message');
+            message.classList.add('show');
 
-        function init() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            particles = Array.from({length: 100}, () => new Particle());
-        }
-
-        function animate() {
-            ctx.fillStyle = 'rgba(26, 26, 26, 0.1)';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            particles.forEach(p => {
-                p.update();
-                p.draw();
-            });
-            requestAnimationFrame(animate);
-        }
-
-        // 花瓣动画
-        function createPetals() {
-            const petals = document.querySelector('.petals');
-            for(let i=0; i<30; i++) {
-                const petal = document.createElement('div');
-                petal.innerHTML = '🌸';
-                petal.style.cssText = `
-                    position: absolute;
-                    font-size: ${Math.random()*20 + 15}px;
-                    left: ${Math.random()*100}vw;
-                    animation: fall ${Math.random()*5 + 5}s linear infinite;
-                    opacity: ${Math.random()*0.5 + 0.5};
-                `;
-                petals.appendChild(petal);
+            // 创建彩带
+            for(let i=0; i<100; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = `${Math.random() * 100}vw`;
+                confetti.style.animationDelay = `${Math.random() * 2}s`;
+                confetti.style.backgroundColor = `hsl(${Math.random()*360}, 100%, 75%)`;
+                document.body.appendChild(confetti);
+                setTimeout(() => confetti.remove(), 5000);
             }
         }
 
-        // 显示隐藏信息
-        function revealMessage() {
-            document.getElementById('message').classList.add('show');
-            document.querySelector('.heart-btn').style.transform = 'scale(1.2)';
-            setTimeout(() => {
-                document.querySelector('.heart-btn').style.transform = 'scale(1)';
-            }, 300);
-        }
-
-        // 初始化
-        window.addEventListener('resize', init);
-        init();
-        animate();
-        createPetals();
-
-        // 添加花瓣动画关键帧
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes fall {
-                to {
-                    transform: translateY(100vh) rotate(360deg);
-                }
-            }
-        `;
-        document.head.appendChild(style);
+        // 背景点击特效
+        document.addEventListener('click', function(e) {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.style.position = 'absolute';
+            heart.style.left = `${e.pageX - 50}px`;
+            heart.style.top = `${e.pageY - 50}px`;
+            heart.style.width = '100px';
+            heart.style.height = '100px';
+            heart.style.opacity = '0.8';
+            heart.style.animation = 'float 3s ease-in-out';
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 3000);
+        });
     </script>
 </body>
 </html>
