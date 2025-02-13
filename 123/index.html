@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>粉色梦境 | 情人节告白</title>
+    <style>
+        :root {
+            --pink-1: #ff9eb5;
+            --pink-2: #ff7b9c;
+            --pink-3: #ff5c7c;
+            --pink-4: #ff3d5c;
+            --pink-5: #ff1a3d;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--pink-1), var(--pink-2));
+            min-height: 100vh;
+            overflow: hidden;
+            font-family: 'Microsoft Yahei', cursive;
+            cursor: pointer;
+        }
+
+        .container {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 4em;
+            color: white;
+            text-shadow: 0 0 20px rgba(255, 60, 92, 0.5);
+            margin-bottom: 30px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .heart-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 20px;
+        }
+
+        .heart {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="%23ffffff" d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z"/></svg>') no-repeat center;
+            background-size: contain;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            animation: heartbeat 1.5s infinite;
+        }
+
+        .heart:hover {
+            transform: scale(1.1);
+            filter: drop-shadow(0 0 20px var(--pink-5));
+        }
+
+        .click-effect {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0.8;
+            transform: scale(0);
+            animation: clickAnimation 0.5s ease-out;
+        }
+
+        .message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 0 30px rgba(255, 92, 124, 0.3);
+            text-align: center;
+            transition: all 0.5s ease;
+            z-index: 10;
+        }
+
+        .message.show {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .message p {
+            font-size: 1.5em;
+            color: var(--pink-5);
+            margin: 15px 0;
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: white;
+            clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+            animation: confetti-fall 5s linear infinite;
+            opacity: 0;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        @keyframes clickAnimation {
+            0% { transform: scale(0); opacity: 1; }
+            100% { transform: scale(3); opacity: 0; }
+        }
+
+        @keyframes confetti-fall {
+            0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>❤️ 点击心形 ❤️</h1>
+        <div class="heart-container">
+            <div class="heart" onclick="showMessage()"></div>
+        </div>
+    </div>
+
+    <div class="message" id="message">
+        <p>亲爱的魔女大人，</p>
+        <p>在粉色的梦境里，</p>
+        <p>我遇见了最美的你。</p>
+        <p>愿与你携手，</p>
+        <p>共度每一个情人节。</p>
+        <p style="color: var(--pink-3); margin-top: 20px;">💖 永远爱你 💖</p>
+    </div>
+
+    <script>
+        // 点击特效
+        document.addEventListener('click', function(e) {
+            const effect = document.createElement('div');
+            effect.className = 'click-effect';
+            effect.style.left = `${e.pageX - 10}px`;
+            effect.style.top = `${e.pageY - 10}px`;
+            document.body.appendChild(effect);
+            setTimeout(() => effect.remove(), 500);
+        });
+
+        // 显示消息
+        function showMessage() {
+            const message = document.getElementById('message');
+            message.classList.add('show');
+
+            // 创建彩带
+            for(let i=0; i<100; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = `${Math.random() * 100}vw`;
+                confetti.style.animationDelay = `${Math.random() * 2}s`;
+                confetti.style.backgroundColor = `hsl(${Math.random()*360}, 100%, 75%)`;
+                document.body.appendChild(confetti);
+                setTimeout(() => confetti.remove(), 5000);
+            }
+        }
+
+        // 背景点击特效
+        document.addEventListener('click', function(e) {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.style.position = 'absolute';
+            heart.style.left = `${e.pageX - 50}px`;
+            heart.style.top = `${e.pageY - 50}px`;
+            heart.style.width = '100px';
+            heart.style.height = '100px';
+            heart.style.opacity = '0.8';
+            heart.style.animation = 'float 3s ease-in-out';
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 3000);
+        });
+    </script>
+</body>
+</html>
