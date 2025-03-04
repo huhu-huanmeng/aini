@@ -1,247 +1,383 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <title>星语心愿 | 情人节特别告白</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>幻梦搜索</title>
     <style>
-        :root {
-            --primary-color: #ff6b6b;
-            --secondary-color: #ff9e9e;
-            --accent-color: #ff4757;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
-            background: #1a1a1a;
-            min-height: 100vh;
+            margin: 0;
             overflow: hidden;
-            font-family: 'Microsoft Yahei', cursive;
-            cursor: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32"><path fill="%23ff6b6b" d="M16 2C8.3 2 2 8.3 2 16s6.3 14 14 14 14-6.3 14-14S23.7 2 16 2zm0 26C9.4 28 4 22.6 4 16S9.4 4 16 4s12 5.4 12 12-5.4 12-12 12z"/><path fill="%23ff6b6b" d="M16 22c-3.3 0-6-2.7-6-6s2.7-6 6-6 6 2.7 6 6-2.7 6-6 6zm0-10c-2.2 0-4 1.8-4 4s1.8 4 4 4 4-1.8 4-4-1.8-4-4-4z"/></svg>'), auto;
-        }
-
-        .particles {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-        }
-
-        .container {
-            position: relative;
-            z-index: 1;
-            perspective: 1000px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .card {
-            width: 90%;
-            max-width: 600px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 40px;
-            transform-style: preserve-3d;
-            animation: float 6s ease-in-out infinite;
-            box-shadow: 0 25px 45px rgba(0,0,0,0.2),
-                        inset 0 0 15px var(--primary-color);
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-
-        h1 {
-            font-size: 3.5em;
-            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
-            -webkit-background-clip: text;
-            color: transparent;
-            text-align: center;
-            margin-bottom: 30px;
-            text-shadow: 0 0 20px rgba(255,107,107,0.3);
-        }
-
-        .poem {
-            font-size: 1.2em;
-            line-height: 1.8;
-            color: rgba(255,255,255,0.9);
-            text-align: center;
-            margin: 20px 0;
+            background: linear-gradient(45deg, #ffb6c1, #ffc0cb);
+            font-family: Arial, sans-serif;
             position: relative;
         }
-
-        .heart-btn {
-            width: 80px;
-            height: 80px;
-            background: var(--primary-color);
-            border-radius: 50%;
-            margin: 30px auto;
-            cursor: pointer;
-            transition: all 0.3s;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            animation: pulse 2s ease infinite;
-        }
-
-        .heart-btn::after {
-            content: '❤️';
-            font-size: 2.5em;
+        
+        /* 装饰元素 - 漂浮的泡泡 */
+        .bubble {
             position: absolute;
-            transition: all 0.3s;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 10px rgba(255, 182, 193, 0.5);
+            animation: float 8s infinite ease-in-out;
+            z-index: -1;
         }
-
-        .petals {
-            position: fixed;
-            pointer-events: none;
-            z-index: 2;
-        }
-
+        
         @keyframes float {
-            0%, 100% { transform: translateY(0) rotateX(5deg) rotateY(5deg); }
-            50% { transform: translateY(-20px) rotateX(-5deg) rotateY(-5deg); }
+            0%, 100% { transform: translateY(0) translateX(0); }
+            50% { transform: translateY(-20px) translateX(10px); }
         }
-
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(255,107,107,0.4); }
-            70% { box-shadow: 0 0 0 20px rgba(255,107,107,0); }
-            100% { box-shadow: 0 0 0 0 rgba(255,107,107,0); }
+        
+        /* 装饰星星 */
+        .star {
+            position: absolute;
+            opacity: 0.7;
+            animation: twinkle 3s infinite ease-in-out;
+            z-index: -1;
         }
-
-        .hidden-message {
-            max-height: 0;
-            overflow: hidden;
-            transition: all 1s ease;
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 0.3; }
+        }
+        
+        .search-container {
+            position: relative;
+            width: 600px;
             text-align: center;
-            color: var(--secondary-color);
+            background: rgba(255, 255, 255, 0.2);
+            padding: 30px;
+            border-radius: 15px;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 8px 32px rgba(255, 182, 193, 0.4);
         }
-
-        .show { max-height: 500px; }
+        
+        .logo {
+            font-size: 36px;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 30px;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+        
+        .search-box {
+            width: 100%;
+            padding: 15px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        
+        .search-box:focus {
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+        }
+        
+        .search-button {
+            position: absolute;
+            right: 55px;
+            top: 5px;
+            bottom: 5px;
+            width: 50px;
+            background: #ff69b4;
+            border: none;
+            border-radius: 25px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .search-button:hover {
+            background: #ff1493;
+        }
+        
+        .dropdown-button {
+            position: absolute;
+            right: 5px;
+            top: 5px;
+            bottom: 5px;
+            width: 40px;
+            background: #ff69b4;
+            border: none;
+            border-radius: 25px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+        }
+        
+        .dropdown-button:hover {
+            background: #ff1493;
+        }
+        
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 5px;
+            top: 55px;
+            background: rgba(255, 192, 203, 0.9);
+            min-width: 160px;
+            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            z-index: 1;
+            overflow: hidden;
+        }
+        
+        .dropdown-content.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .search-engines {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .engine-option {
+            margin: 5px 10px;
+            padding: 8px 15px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .engine-option:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+        
+        .engine-option.active {
+            background: rgba(255, 105, 180, 0.7);
+            font-weight: bold;
+        }
+        
+        .search-form {
+            position: relative;
+            margin-bottom: 20px;
+        }
+        
+        /* 自定义搜索引擎样式 */
+        .custom-engine {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px dashed rgba(255, 255, 255, 0.5);
+        }
+        
+        .custom-engine-form {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .custom-engine-input {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 20px;
+            outline: none;
+            background: rgba(255, 255, 255, 0.7);
+        }
+        
+        .custom-engine-button {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 20px;
+            background: #ff69b4;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .custom-engine-button:hover {
+            background: #ff1493;
+        }
+        
+        .toggle-custom {
+            margin-top: 10px;
+            color: white;
+            text-decoration: underline;
+            cursor: pointer;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
-    <canvas class="particles"></canvas>
-    <div class="petals"></div>
-
-    <div class="container">
-        <div class="card">
-            <h1>星辰为证·此情可待</h1>
-            
-            <div class="poem">
-                <p>亲爱的魔女大人</p>
-                <p>在时间的长河里</p>
-                <p>你是我唯一的锚点</p>
-                <p>心动如量子纠缠</p>
-                <p>穿越光年亦不衰减</p>
-            </div>
-
-            <div class="heart-btn" onclick="revealMessage()"></div>
-
-            <div class="hidden-message" id="message">
-                <div class="poem">
-                    <p>愿以余生为笺</p>
-                    <p>写不尽的三行诗：</p>
-                    <p>第一行是相遇</p>
-                    <p>第二行是相知</p>
-                    <p>第三行...</p>
-                    <p style="color: var(--accent-color); margin-top: 15px;">❤️ 留予你我共书 ❤️</p>
+    <!-- 装饰元素 -->
+    <div class="bubble" style="width: 50px; height: 50px; top: 10%; left: 10%;"></div>
+    <div class="bubble" style="width: 30px; height: 30px; top: 20%; left: 80%;"></div>
+    <div class="bubble" style="width: 70px; height: 70px; top: 70%; left: 15%;"></div>
+    <div class="bubble" style="width: 40px; height: 40px; top: 60%; left: 75%;"></div>
+    <div class="bubble" style="width: 60px; height: 60px; top: 40%; left: 85%;"></div>
+    
+    <div class="star" style="top: 15%; left: 20%; font-size: 20px;">✨</div>
+    <div class="star" style="top: 25%; left: 85%; font-size: 24px;">✨</div>
+    <div class="star" style="top: 75%; left: 25%; font-size: 18px;">✨</div>
+    <div class="star" style="top: 65%; left: 80%; font-size: 22px;">✨</div>
+    
+    <div class="search-container">
+        <div class="logo">幻梦搜索</div>
+        <form id="searchForm" class="search-form" action="https://www.bing.com/search" method="get">
+            <input type="text" id="searchBox" name="q" class="search-box" placeholder="请输入搜索关键词..." autocomplete="off">
+            <button type="submit" class="search-button">🔍</button>
+            <button type="button" id="dropdownBtn" class="dropdown-button">▼</button>
+            <div id="dropdownContent" class="dropdown-content">
+                <div class="search-engines" id="searchEngines">
+                    <div class="engine-option" data-engine="baidu" data-action="https://www.baidu.com/s" data-param="wd">百度</div>
+                    <div class="engine-option" data-engine="google" data-action="https://www.google.com/search" data-param="q">Google</div>
+                    <div class="engine-option active" data-engine="bing" data-action="https://www.bing.com/search" data-param="q">必应</div>
+                    <div class="engine-option" data-engine="sogou" data-action="https://www.sogou.com/web" data-param="query">搜狗</div>
+                    <div class="engine-option" data-engine="360" data-action="https://www.so.com/s" data-param="q">360</div>
+                </div>
+                <div class="custom-engine" id="customEngine">
+                    <div class="custom-engine-form">
+                        <input type="text" id="engineName" class="custom-engine-input" placeholder="搜索引擎名称">
+                        <input type="text" id="engineUrl" class="custom-engine-input" placeholder="搜索URL (包含 %s 作为查询参数)">
+                        <button type="button" id="addEngine" class="custom-engine-button">添加</button>
+                    </div>
                 </div>
             </div>
-        </div>
+        </form>
     </div>
 
     <script>
-        // 粒子背景动画
-        const canvas = document.querySelector('.particles');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
+        const searchForm = document.getElementById('searchForm');
+        const searchBox = document.getElementById('searchBox');
+        const searchEngines = document.getElementById('searchEngines');
+        const engineOptions = document.querySelectorAll('.engine-option');
+        const toggleCustom = document.getElementById('toggleCustom');
+        const customEngine = document.getElementById('customEngine');
+        const engineName = document.getElementById('engineName');
+        const engineUrl = document.getElementById('engineUrl');
+        const addEngine = document.getElementById('addEngine');
+        const dropdownBtn = document.getElementById('dropdownBtn');
+        const dropdownContent = document.getElementById('dropdownContent');
+        
+        // 设置当前搜索引擎
+        let currentEngine = {
+            name: 'bing',
+            action: 'https://www.bing.com/search',
+            param: 'q'
+        };
 
-        class Particle {
-            constructor() {
-                this.reset();
-            }
-            reset() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 2 + 1;
-                this.speed = Math.random() * 0.5 + 0.5;
-                this.alpha = Math.random() * 0.5 + 0.5;
-            }
-            update() {
-                this.y += this.speed;
-                if (this.y > canvas.height) this.reset();
-            }
-            draw() {
-                ctx.fillStyle = `hsla(${Math.random()*60 + 300}, 70%, 50%, ${this.alpha})`;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-            }
-        }
-
-        function init() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            particles = Array.from({length: 100}, () => new Particle());
-        }
-
-        function animate() {
-            ctx.fillStyle = 'rgba(26, 26, 26, 0.1)';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            particles.forEach(p => {
-                p.update();
-                p.draw();
+        // 切换搜索引擎
+        function setupEngineOptions() {
+            document.querySelectorAll('.engine-option').forEach(option => {
+                option.addEventListener('click', () => {
+                    // 移除所有active类
+                    document.querySelectorAll('.engine-option').forEach(opt => opt.classList.remove('active'));
+                    
+                    // 添加active类到当前选中的选项
+                    option.classList.add('active');
+                    
+                    // 更新当前搜索引擎
+                    currentEngine = {
+                        name: option.dataset.engine,
+                        action: option.dataset.action,
+                        param: option.dataset.param
+                    };
+                    
+                    // 更新表单属性
+                    searchForm.action = currentEngine.action;
+                    searchBox.name = currentEngine.param;
+                });
             });
-            requestAnimationFrame(animate);
         }
+        
+        // 初始设置搜索引擎选项
+        setupEngineOptions();
 
-        // 花瓣动画
-        function createPetals() {
-            const petals = document.querySelector('.petals');
-            for(let i=0; i<30; i++) {
-                const petal = document.createElement('div');
-                petal.innerHTML = '🌸';
-                petal.style.cssText = `
-                    position: absolute;
-                    font-size: ${Math.random()*20 + 15}px;
-                    left: ${Math.random()*100}vw;
-                    animation: fall ${Math.random()*5 + 5}s linear infinite;
-                    opacity: ${Math.random()*0.5 + 0.5};
-                `;
-                petals.appendChild(petal);
+        // 表单提交前检查
+        searchForm.addEventListener('submit', (e) => {
+            if (!searchBox.value.trim()) {
+                e.preventDefault();
+                searchBox.focus();
             }
-        }
+        });
 
-        // 显示隐藏信息
-        function revealMessage() {
-            document.getElementById('message').classList.add('show');
-            document.querySelector('.heart-btn').style.transform = 'scale(1.2)';
-            setTimeout(() => {
-                document.querySelector('.heart-btn').style.transform = 'scale(1)';
-            }, 300);
-        }
-
-        // 初始化
-        window.addEventListener('resize', init);
-        init();
-        animate();
-        createPetals();
-
-        // 添加花瓣动画关键帧
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes fall {
-                to {
-                    transform: translateY(100vh) rotate(360deg);
+        // 页面加载时聚焦搜索框
+        window.addEventListener('load', () => {
+            searchBox.focus();
+        });
+        
+        // 下拉菜单显示/隐藏
+        dropdownBtn.addEventListener('click', () => {
+            dropdownContent.classList.toggle('show');
+        });
+        
+        // 点击页面其他地方关闭下拉菜单
+        window.addEventListener('click', (e) => {
+            if (!dropdownBtn.contains(e.target) && !dropdownContent.contains(e.target)) {
+                dropdownContent.classList.remove('show');
+            }
+        });
+        
+        // 添加自定义搜索引擎
+        addEngine.addEventListener('click', () => {
+            const name = engineName.value.trim();
+            const url = engineUrl.value.trim();
+            
+            if (name && url) {
+                if (!url.includes('%s')) {
+                    alert('URL必须包含%s作为查询参数的占位符');
+                    return;
                 }
+                
+                // 创建新的搜索引擎选项
+                const newEngine = document.createElement('div');
+                newEngine.className = 'engine-option';
+                newEngine.textContent = name;
+                
+                // 解析URL和参数
+                const urlParts = url.split('%s');
+                const action = urlParts[0];
+                const param = 'q'; // 默认参数名
+                
+                // 设置数据属性
+                newEngine.dataset.engine = name.toLowerCase();
+                newEngine.dataset.action = action;
+                newEngine.dataset.param = param;
+                
+                // 添加到搜索引擎列表
+                searchEngines.appendChild(newEngine);
+                
+                // 重新设置事件监听
+                setupEngineOptions();
+                
+                // 清空输入框
+                engineName.value = '';
+                engineUrl.value = '';
+                
+                // 选中新添加的搜索引擎
+                newEngine.click();
+            } else {
+                alert('请填写完整的搜索引擎信息');
             }
-        `;
-        document.head.appendChild(style);
+        });
+        
+        // 创建装饰元素
+        function createDecorations() {
+            // 已在HTML中静态创建
+        }
+        
+        createDecorations();
     </script>
 </body>
 </html>
